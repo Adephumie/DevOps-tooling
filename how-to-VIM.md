@@ -65,7 +65,8 @@ If you encounter any of this error by not using the correct character sequence, 
 13. **Renaming/replacing certain words with another one:** to replace a word for example, `display` with another word, `show` in a document, use the following keys: `:` `%` `s` `/` `display` `/` `show`. i.e. `:%s/old/new`.
 
 
-
+> ## Resources
+> [Basic markdown syntax guide](https://www.markdownguide.org/basic-syntax/)
 
 
 
