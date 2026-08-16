@@ -193,10 +193,46 @@ resource "aws_instance" "myproject-server" {
   the user data argument using the file() function. 
   */
 
-  user_data = file("startup-script.sh")
+  # user_data = file("startup-script.sh")
   
-  user_data_replace_on_change = true
+  # user_data_replace_on_change = true
 
+  connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(var.private_key_path)
+      host        = self.public_ip
+      }
+
+  provisioner "file" {
+    source = "startup-script.sh"
+    destination = "/home/ec2-user/startup-script-on-ec2.sh"
+  }
+
+  provisioner "remote-exec" {
+    /*inline = [
+      "export ENV=${var.env_prefix}",
+      "mkdir newdir"
+    ]*/
+
+    # inline = ["/home/ec2-user/startup-script-on-ec2.sh"]
+
+    script = "startup-script.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "echo ${self.public_ip} > public-ip.txt"
+  } 
+
+  /*Provisioners are not recommended by Terraform. They should only be used as a last resort.
+  The reason is that provisioners are not idempotent, meaning that they can cause issues if 
+  the resource is recreated or updated. 
+  Use provisioners only when there is no other way to achieve the desired outcome.
+  Tools like Ansible, Chef, or Puppet are better suited for configuration management and 
+  should be used instead of provisioners whenever possible.*/
+
+  # There's a local terraform block that can be used in place of local-exec provisioner.
+  
   tags = {
     Name = "${var.env_prefix}-myproject-server"
   }
