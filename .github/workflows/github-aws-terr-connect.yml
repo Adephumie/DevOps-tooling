@@ -3,7 +3,7 @@ name: AWS OIDC Test
 on:
   push:
     branches:
-      - main
+      - feature/OIDC-Auth
 
 env:
   AWS_REGION: ${{ var.AWS_REGION }}
