@@ -24,7 +24,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.ARN }}
-          role-session-name: test-OIDC-session
+          role-session-name: ${{ vars.ROLENAME }}
           aws-region: ${{ env.AWS_REGION }}
       
       - name: Print VPCs in region
