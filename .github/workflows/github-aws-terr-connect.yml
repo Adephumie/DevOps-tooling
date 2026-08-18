@@ -1,0 +1,34 @@
+name: AWS OIDC Test
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: ${{ var.AWS_REGION }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  OIDC-aws-Git-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ vars.ARN }}
+          role-session-name: ${{ secrets.ROLENAME }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Print VPCs in region
+        run: aws ec2 describe-vpcs --query 'Vpcs[*].[VpcId,CidrBlock,Tags[?Key==`Name`].Value|[0]]' --output table
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
