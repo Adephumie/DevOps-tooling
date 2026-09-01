@@ -77,10 +77,32 @@ export DB_USERNAME=dbuser
 export DB_PASSWORD=secretpass
 export DB_NAME=dbuser
 ```
-Afterwards, save and close the file. However, you have to reload the file with the following command to activate the changes you just made.
+Afterwards, save and close the file. However, you have to reload the bash configuration (`.bashrc`) file with the following command to activate the changes you just added.
 
 ```
 source .bashrc
 ```
 
+## How to add a custom command/program
 
+1. Create a script, for example, [welcome](./welcome)
+2. Grant the script execute permission, (chmod a+x welcome)
+3. We need to define a path to our custome file in the `.bashrc` file.
+
+> vim ~/.bashrc
+
+In the `.bashrc` file, add `PATH=$PATH:/home/user/` to the file. Note that the absolute path may be monger than `/home/user/` depending on the location of the script that was created. 
+
+> source ~/.bashrc
+This reloads the Bash configuration file into the current terminal session. This enables it to apply changes such as new environment variables, aliases, or PATH updates without requiring you to close and reopen the terminal. 
+
+4. Change directory, cd, into a folder where the script is not in and execute the script (The previous steps helped us configure it globally).
+
+5. Execute the script by just typing the name on the CLI.
+
+> welcome
+
+![Welcome Script](./images/welcome-script.png)
+
+
+It should execute the script
